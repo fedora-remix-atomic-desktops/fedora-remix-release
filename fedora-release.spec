@@ -1,5 +1,5 @@
-%define release_name Rawhide
-%define is_rawhide 1
+%define release_name Thirty Nine
+%define is_rawhide 0
 
 %define eol_date 2024-05-14
 
