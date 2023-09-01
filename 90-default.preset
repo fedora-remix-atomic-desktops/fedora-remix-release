@@ -71,17 +71,34 @@ enable virtqemud.service
 enable virtxend.service
 enable virtlxcd.service
 
-# Compatibility with libvirtd sockets for old clients and expose TCP sockets
+# Sockets for the services listed above, to support socket activation
+# after the initial timeout
+enable virtqemud.socket
+enable virtqemud-ro.socket
+enable virtqemud-admin.socket
+enable virtxend.socket
+enable virtxend-ro.socket
+enable virtxend-admin.socket
+enable virtlxcd.socket
+enable virtlxcd-ro.socket
+enable virtlxcd-admin.socket
+
+# Compatibility with libvirtd sockets for old clients (socket activated
+# only when required)
 enable virtproxyd.socket
 
 # Secondary drivers providing supporting functionality to main virtualization
-# drivers, socket activated only when required
+# drivers (socket activated only when required)
 enable virtinterfaced.socket
 enable virtnetworkd.socket
 enable virtnodedevd.socket
 enable virtnwfilterd.socket
 enable virtsecretd.socket
 enable virtstoraged.socket
+
+# Non-driver support services (socket activated only when required)
+enable virtlogd.socket
+enable virtlockd.socket
 
 # https://fedoraproject.org/w/index.php?title=Starting_services_by_default&oldid=377748
 enable xinetd.service
