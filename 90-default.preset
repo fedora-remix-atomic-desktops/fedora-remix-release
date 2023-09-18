@@ -70,6 +70,7 @@ enable firewalld.service
 enable virtqemud.service
 enable virtxend.service
 enable virtlxcd.service
+enable virtvboxd.service
 
 # Sockets for the services listed above, to support socket activation
 # after the initial timeout
@@ -82,6 +83,9 @@ enable virtxend-admin.socket
 enable virtlxcd.socket
 enable virtlxcd-ro.socket
 enable virtlxcd-admin.socket
+enable virtvboxd.socket
+enable virtvboxd-ro.socket
+enable virtvboxd-admin.socket
 
 # Compatibility with libvirtd sockets for old clients (socket activated
 # only when required). Note that the -tcp and -tls sockets are kept disabled
