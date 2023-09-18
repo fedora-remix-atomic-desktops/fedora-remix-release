@@ -84,21 +84,39 @@ enable virtlxcd-ro.socket
 enable virtlxcd-admin.socket
 
 # Compatibility with libvirtd sockets for old clients (socket activated
-# only when required)
+# only when required). Note that the -tcp and -tls sockets are kept disabled
+# by default, as they require additional configuration before they can work
 enable virtproxyd.socket
+enable virtproxyd-ro.socket
+enable virtproxyd-admin.socket
 
 # Secondary drivers providing supporting functionality to main virtualization
 # drivers (socket activated only when required)
 enable virtinterfaced.socket
+enable virtinterfaced-ro.socket
+enable virtinterfaced-admin.socket
 enable virtnetworkd.socket
+enable virtnetworkd-ro.socket
+enable virtnetworkd-admin.socket
 enable virtnodedevd.socket
+enable virtnodedevd-ro.socket
+enable virtnodedevd-admin.socket
 enable virtnwfilterd.socket
+enable virtnwfilterd-ro.socket
+enable virtnwfilterd-admin.socket
 enable virtsecretd.socket
+enable virtsecretd-ro.socket
+enable virtsecretd-admin.socket
 enable virtstoraged.socket
+enable virtstoraged-ro.socket
+enable virtstoraged-admin.socket
 
-# Non-driver support services (socket activated only when required)
+# Non-driver support services (socket activated only when required, no
+# read-only socket)
 enable virtlogd.socket
+enable virtlogd-admin.socket
 enable virtlockd.socket
+enable virtlockd-admin.socket
 
 # https://fedoraproject.org/w/index.php?title=Starting_services_by_default&oldid=377748
 enable xinetd.service
