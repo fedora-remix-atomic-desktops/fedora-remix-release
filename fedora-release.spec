@@ -144,7 +144,11 @@ Summary: Fedora release files
 Requires:   fedora-release-variant = %{version}-%{release}
 Suggests:   fedora-release
 
+%if %{with eln}
+Requires:   fedora-repos-eln = %{version}
+%else
 Requires:   fedora-repos(%{version})
+%endif
 Requires:   fedora-release-identity = %{version}-%{release}
 
 %if %{is_rawhide}
