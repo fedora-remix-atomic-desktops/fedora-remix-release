@@ -8,7 +8,11 @@
 
 %if %{is_rawhide}
 %define bug_version rawhide
-%define releasever rawhide
+%if 0%{?eln}
+  %define releasever eln
+%else
+  %define releasever rawhide
+%endif
 %define doc_version rawhide
 %else
 %define bug_version %{dist_version}
@@ -153,6 +157,7 @@ Requires:   fedora-release-identity = %{version}-%{release}
 
 %if %{is_rawhide}
 # Make $releasever return "rawhide" on Rawhide
+# and "eln" on ELN.
 # https://pagure.io/releng/issue/7445
 Provides:       system-release(releasever) = %{releasever}
 %endif
