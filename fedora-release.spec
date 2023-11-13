@@ -1,7 +1,7 @@
 %define release_name Rawhide
 %define is_rawhide 1
 
-%define eol_date 2024-05-14
+%define eol_date 2025-05-13
 
 %define dist_version 40
 %define rhel_dist_version 10
