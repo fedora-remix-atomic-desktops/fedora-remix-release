@@ -468,10 +468,11 @@ Suggests: bind-dnssec-utils
 Suggests: bind-utils
 
 # Default OpenJDK version, prefer over other versions for
-# Provides: java, java-devel, java-headless, etc.
+# Provides: java, java-devel, java-headless, maven-jdk-binding, etc.
 Suggests: java-17-openjdk
 Suggests: java-17-openjdk-devel
 Suggests: java-17-openjdk-headless
+Suggests: maven-openjdk17
 
 # Prefer over Fedora freeipa (same code, different name, each Provides the other)
 Suggests: ipa-client
