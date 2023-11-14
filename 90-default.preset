@@ -433,10 +433,6 @@ enable nmstate.service
 # https://bugzilla.redhat.com/show_bug.cgi?id=2218006
 enable nfs-client.target
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=2230575
-enable grub-boot-indeterminate.service
-enable grub2-systemd-integration.service
-
 # Enable cloud-init services
 # https://bugzilla.redhat.com/show_bug.cgi?id=2233948
 enable cloud-config.service
