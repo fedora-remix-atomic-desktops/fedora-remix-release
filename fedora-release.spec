@@ -116,6 +116,7 @@ Source26:       80-kde.preset
 Source27:       81-desktop.preset
 Source28:       longer-default-shutdown-timeout.conf
 Source29:       org.gnome.settings-daemon.plugins.power.gschema.override
+Source30:       fedora-sway.conf
 
 BuildArch:      noarch
 
@@ -1508,6 +1509,8 @@ echo "VARIANT_ID=sway" >> %{buildroot}%{_prefix}/lib/os-release.sway
 sed -i -e "s|(%{release_name}%{?prerelease})|(Sway%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.sway
 sed -i -e 's|BUG_REPORT_URL=.*|BUG_REPORT_URL="https://gitlab.com/fedora/sigs/sway/SIG/-/issues"|' %{buildroot}/%{_prefix}/lib/os-release.sway
 sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/Sway/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.sway
+# Add Fedora Sway dnf protected packages list
+install -Dm0644 %{SOURCE30} -t %{buildroot}%{_sysconfdir}/dnf/protected.d/
 %endif
 
 %if %{with sericea}
@@ -1814,6 +1817,7 @@ ln -s --relative %{buildroot}%{_swidtagdir} %{buildroot}%{_sysconfdir}/swid/swid
 %{_prefix}/lib/os-release.sway
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.sway
 %{_prefix}/lib/systemd/system-preset/81-desktop.preset
+%{_sysconfdir}/dnf/protected.d/fedora-sway.conf
 %endif
 
 
