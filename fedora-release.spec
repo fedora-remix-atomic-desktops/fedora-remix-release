@@ -496,6 +496,9 @@ Suggests: postfix
 # Prefer over cdrkit/genisoimage for /usr/bin/mkisofs
 Suggests: xorriso
 
+# Prefer over wget-1.x for /usr/bin/wget
+Suggests: wget2-wget
+
 RemovePathPostfixes: .eln
 Provides:       fedora-release-identity = %{version}-%{release}
 Conflicts:      fedora-release-identity
