@@ -499,6 +499,10 @@ Suggests: xorriso
 # Prefer over wget-1.x for /usr/bin/wget
 Suggests: wget2-wget
 
+# Prefer over zlib, zlib-devel
+Suggests: zlib-ng-compat
+Suggests: zlib-ng-compat-devel
+
 RemovePathPostfixes: .eln
 Provides:       fedora-release-identity = %{version}-%{release}
 Conflicts:      fedora-release-identity
