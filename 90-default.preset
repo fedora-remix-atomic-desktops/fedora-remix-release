@@ -444,3 +444,7 @@ enable cloud-init-local.service
 # https://bugzilla.redhat.com/show_bug.cgi?id=2239607
 enable kernel-bootcfg-boot-successful.service
 
+# Enable pd-mapper service for Thinkpad X13s
+# https://bugzilla.redhat.com/show_bug.cgi?id=2255318
+enable pd-mapper.service
+
