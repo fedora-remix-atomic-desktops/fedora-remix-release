@@ -503,6 +503,9 @@ Suggests: wget2-wget
 Suggests: zlib-ng-compat
 Suggests: zlib-ng-compat-devel
 
+# Prefer over sdubby which also Provides: grubby
+Suggests: grubby
+
 RemovePathPostfixes: .eln
 Provides:       fedora-release-identity = %{version}-%{release}
 Conflicts:      fedora-release-identity
