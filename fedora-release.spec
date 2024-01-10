@@ -499,9 +499,10 @@ Suggests: xorriso
 # Prefer over wget-1.x for /usr/bin/wget
 Suggests: wget2-wget
 
-# Prefer over zlib, zlib-devel
+# Prefer over zlib, zlib-devel, zlib-static
 Suggests: zlib-ng-compat
 Suggests: zlib-ng-compat-devel
+Suggests: zlib-ng-compat-static
 
 # Prefer over sdubby which also Provides: grubby
 Suggests: grubby
