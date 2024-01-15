@@ -40,6 +40,9 @@ enable ModemManager.service
 # Approved by FESCo - https://fedorahosted.org/fesco/ticket/1311
 enable auditd.service
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=2258520
+enable audit-rules.service
+
 # Locally-running service
 enable restorecond.service
 
