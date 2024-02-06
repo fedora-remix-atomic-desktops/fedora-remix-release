@@ -1,3 +1,4 @@
+
 %define release_name Rawhide
 %define is_rawhide 1
 
@@ -37,6 +38,7 @@
 %bcond_with kinoite
 %bcond_with snappy
 %bcond_with soas
+%bcond_with toolbx
 %bcond_with workstation
 %bcond_with xfce
 %bcond_with i3
@@ -63,6 +65,7 @@
 %bcond_without kinoite
 %bcond_without snappy
 %bcond_without soas
+%bcond_without toolbx
 %bcond_without workstation
 %bcond_without xfce
 %bcond_without i3
@@ -827,6 +830,42 @@ itself as Fedora Sugar on a Stick.
 %endif
 
 
+%if %{with toolbx}
+%package toolbx
+Summary:        Base package for Fedora Toolbx container specific default configurations
+
+RemovePathPostfixes: .toolbx
+Provides:       fedora-release = %{version}-%{release}
+Provides:       fedora-release-variant = %{version}-%{release}
+Provides:       system-release
+Provides:       system-release(%{version})
+Requires:       fedora-release-common = %{version}-%{release}
+
+# fedora-release-common Requires: fedora-release-identity, so at least one
+# package must provide it. This Recommends: pulls in
+# fedora-release-identity-toolbx if nothing else is already doing so.
+Recommends:     fedora-release-identity-toolbx
+
+
+%description toolbx
+Provides a base package for Fedora Toolbx container specific configuration files to
+depend on as well as Toolbx container system defaults.
+
+
+%package identity-toolbx
+Summary:        Package providing the identity for Fedora Toolbx container image
+
+RemovePathPostfixes: .toolbx
+Provides:       fedora-release-identity = %{version}-%{release}
+Conflicts:      fedora-release-identity
+Requires(meta): fedora-release-toolbx = %{version}-%{release}
+
+
+%description identity-toolbx
+Provides the necessary files for a Fedora installation that is identifying
+itself as the Fedora Toolbx container image.
+%endif
+
 %if %{with workstation}
 %package workstation
 Summary:        Base package for Fedora Workstation-specific default configurations
@@ -1444,6 +1483,16 @@ sed -i -e "s|(%{release_name}%{?prerelease})|(Sugar on a Stick%{?prerelease})|g"
 sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/Sugar/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.soas
 %endif
 
+%if %{with toolbx}
+# Toolbx
+cp -p os-release \
+      %{buildroot}%{_prefix}/lib/os-release.toolbx
+echo "VARIANT=\"Toolbx Container Image\"" >> %{buildroot}%{_prefix}/lib/os-release.toolbx
+echo "VARIANT_ID=toolbx" >> %{buildroot}%{_prefix}/lib/os-release.toolbx
+sed -i -e "s|(%{release_name}%{?prerelease})|(Toolbx Container Image%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.toolbx
+sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/Toolbx/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.toolbx
+%endif
+
 %if %{with workstation}
 # Workstation
 cp -p os-release \
@@ -1775,6 +1824,14 @@ ln -s --relative %{buildroot}%{_swidtagdir} %{buildroot}%{_sysconfdir}/swid/swid
 %files identity-soas
 %{_prefix}/lib/os-release.soas
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.soas
+%endif
+
+
+%if %{with toolbx}
+%files toolbx
+%files identity-toolbx
+%{_prefix}/lib/os-release.toolbx
+%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.toolbx
 %endif
 
 
