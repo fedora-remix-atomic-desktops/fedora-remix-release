@@ -510,6 +510,10 @@ Suggests: zlib-ng-compat-static
 # Prefer over sdubby which also Provides: grubby
 Suggests: grubby
 
+# Prefer over arptables-legacy, ebtables-legacy, and iptables-legacy
+# for Provides: arptables-helper, ebtables, or iptables
+Suggests: iptables-nft
+
 RemovePathPostfixes: .eln
 Provides:       fedora-release-identity = %{version}-%{release}
 Conflicts:      fedora-release-identity
