@@ -492,8 +492,7 @@ Suggests: ipa-server-trust-ad
 Suggests: ipa-healthcheck
 Suggests: ipa-healthcheck-core
 
-# Prefer over exim, opensmtpd for Provides: MTA smtpd smtpdaemon server(smtp)
-# sendmail is also in RHEL but does not Provides: smtpdaemon
+# Prefer over exim, opensmtpd, sendmail for Provides: MTA smtpd smtpdaemon server(smtp)
 Suggests: postfix
 
 # Prefer over cdrkit/genisoimage for /usr/bin/mkisofs
@@ -513,6 +512,10 @@ Suggests: grubby
 # Prefer over arptables-legacy, ebtables-legacy, and iptables-legacy
 # for Provides: arptables-helper, ebtables, or iptables
 Suggests: iptables-nft
+
+# Prefer over blis for libblas*.so.3()(64bit)
+Suggests: blas
+Suggests: blas64
 
 RemovePathPostfixes: .eln
 Provides:       fedora-release-identity = %{version}-%{release}
