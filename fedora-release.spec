@@ -5,7 +5,7 @@
 %define eol_date 2025-05-13
 
 %define dist_version 41
-%define rhel_dist_version 10
+%define rhel_dist_version 11
 
 %if %{is_rawhide}
 %define bug_version rawhide
