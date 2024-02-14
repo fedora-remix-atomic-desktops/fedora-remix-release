@@ -45,7 +45,7 @@
 %bcond_with lxqt
 %bcond_with budgie
 %bcond_with sway
-%bcond_with sericea
+%bcond_with sway_atomic
 %bcond_with onyx
 %bcond_with mobility
 %else
@@ -72,12 +72,12 @@
 %bcond_without lxqt
 %bcond_without budgie
 %bcond_without sway
-%bcond_without sericea
+%bcond_without sway_atomic
 %bcond_without onyx
 %bcond_without mobility
 %endif
 
-%if %{with silverblue} || %{with kinoite} || %{with sericea} || %{with onyx}
+%if %{with silverblue} || %{with kinoite} || %{with sway_atomic} || %{with onyx}
 %global with_ostree_desktop 1
 %endif
 
@@ -1095,11 +1095,11 @@ itself as Fedora Sway.
 %endif
 
 
-%if %{with sericea}
-%package sericea
-Summary:        Base package for Fedora Sericea specific default configurations
+%if %{with sway_atomic}
+%package sway-atomic
+Summary:        Base package for Fedora Sway Atomic specific default configurations
 
-RemovePathPostfixes: .sericea
+RemovePathPostfixes: .sway-atomic
 Provides:       fedora-release = %{version}-%{release}
 Provides:       fedora-release-variant = %{version}-%{release}
 Provides:       system-release
@@ -1109,27 +1109,27 @@ Requires:       fedora-release-ostree-desktop = %{version}-%{release}
 
 # fedora-release-common Requires: fedora-release-identity, so at least one
 # package must provide it. This Recommends: pulls in
-# fedora-release-identity-sericea if nothing else is already doing so.
-Recommends:     fedora-release-identity-sericea
+# fedora-release-identity-sway-atomic if nothing else is already doing so.
+Recommends:     fedora-release-identity-sway-atomic
 
 
-%description sericea
-Provides a base package for Fedora Sericea specific configuration
+%description sway-atomic
+Provides a base package for Fedora Sway Atomic specific configuration
 files to depend on.
 
 
-%package identity-sericea
-Summary:        Package providing the identity for Fedora Sericea
+%package identity-sway-atomic
+Summary:        Package providing the identity for Fedora Sway Atomic
 
-RemovePathPostfixes: .sericea
+RemovePathPostfixes: .sway-atomic
 Provides:       fedora-release-identity = %{version}-%{release}
 Conflicts:      fedora-release-identity
-Requires(meta): fedora-release-sericea = %{version}-%{release}
+Requires(meta): fedora-release-sway-atomic = %{version}-%{release}
 
 
-%description identity-sericea
+%description identity-sway-atomic
 Provides the necessary files for a Fedora installation that is identifying
-itself as Fedora Sericea.
+itself as Fedora Sway Atomic.
 %endif
 
 %if %{with onyx}
@@ -1580,15 +1580,15 @@ sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/Sway/;s/<!--.*-->//;/^$/d' 
 install -Dm0644 %{SOURCE30} -t %{buildroot}%{_sysconfdir}/dnf/protected.d/
 %endif
 
-%if %{with sericea}
-cp -p os-release %{buildroot}%{_prefix}/lib/os-release.sericea
-echo "VARIANT=\"Sericea\"" >> %{buildroot}%{_prefix}/lib/os-release.sericea
-echo "VARIANT_ID=sericea" >> %{buildroot}%{_prefix}/lib/os-release.sericea
-sed -i -e "s|(%{release_name}%{?prerelease})|(Sericea%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.sericea
-sed -i -e 's|DOCUMENTATION_URL=.*|DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora-sericea/"|' %{buildroot}%{_prefix}/lib/os-release.sericea
-sed -i -e 's|HOME_URL=.*|HOME_URL="https://fedoraproject.org/sericea/"|' %{buildroot}/%{_prefix}/lib/os-release.sericea
-sed -i -e 's|BUG_REPORT_URL=.*|BUG_REPORT_URL="https://gitlab.com/fedora/sigs/sway/SIG/-/issues"|' %{buildroot}/%{_prefix}/lib/os-release.sericea
-sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/Sericea/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.sericea
+%if %{with sway_atomic}
+cp -p os-release %{buildroot}%{_prefix}/lib/os-release.sway-atomic
+echo "VARIANT=\"Sway Atomic\"" >> %{buildroot}%{_prefix}/lib/os-release.sway-atomic
+echo "VARIANT_ID=sway-atomic" >> %{buildroot}%{_prefix}/lib/os-release.sway-atomic
+sed -i -e "s|(%{release_name}%{?prerelease})|(Sway Atomic%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.sway-atomic
+sed -i -e 's|DOCUMENTATION_URL=.*|DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora-sericea/"|' %{buildroot}%{_prefix}/lib/os-release.sway-atomic
+sed -i -e 's|HOME_URL=.*|HOME_URL="https://fedoraproject.org/atomic-desktops/sway/"|' %{buildroot}/%{_prefix}/lib/os-release.sway-atomic
+sed -i -e 's|BUG_REPORT_URL=.*|BUG_REPORT_URL="https://gitlab.com/fedora/sigs/sway/SIG/-/issues"|' %{buildroot}/%{_prefix}/lib/os-release.sway-atomic
+sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/SwayAtomic/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.sway-atomic
 %endif
 
 %if %{with onyx}
@@ -1896,11 +1896,11 @@ ln -s --relative %{buildroot}%{_swidtagdir} %{buildroot}%{_sysconfdir}/swid/swid
 %endif
 
 
-%if %{with sericea}
-%files sericea
-%files identity-sericea
-%{_prefix}/lib/os-release.sericea
-%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.sericea
+%if %{with sway_atomic}
+%files sway-atomic
+%files identity-sway-atomic
+%{_prefix}/lib/os-release.sway-atomic
+%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.sway-atomic
 %{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
