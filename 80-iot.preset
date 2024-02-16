@@ -22,3 +22,6 @@ enable zezere_ignition.timer
 
 # https://fedoraproject.org/wiki/Changes/EnableFwupdRefreshByDefault
 enable fwupd-refresh.timer
+
+# https://github.com/fedora-iot/iot-distro/issues/2
+enable fedora-iot-config-remote-fix.service
