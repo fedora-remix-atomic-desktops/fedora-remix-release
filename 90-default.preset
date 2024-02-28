@@ -398,6 +398,10 @@ enable google-guest-agent.service
 enable google-startup-scripts.service
 enable google-shutdown-scripts.service
 
+# Support service for Azure
+# Approved by FESCo: https://pagure.io/fesco/issue/2849
+enable waagent.service
+
 # Certbot (Let's Encrypt)
 # https://bugzilla.redhat.com/show_bug.cgi?id=1940211
 enable certbot-renew.timer
