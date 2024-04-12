@@ -25,3 +25,6 @@ enable fwupd-refresh.timer
 
 # https://github.com/fedora-iot/iot-distro/issues/2
 enable fedora-iot-config-remote-fix.service
+
+# enable FDO client for device onboarding
+enable fdo-client-linuxapp.service
