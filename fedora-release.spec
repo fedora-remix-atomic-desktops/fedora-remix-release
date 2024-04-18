@@ -120,6 +120,7 @@ Source27:       81-desktop.preset
 Source28:       longer-default-shutdown-timeout.conf
 Source29:       org.gnome.settings-daemon.plugins.power.gschema.override
 Source30:       fedora-sway.conf
+Source31:       20-fedora-defaults.conf
 
 BuildArch:      noarch
 
@@ -1646,6 +1647,9 @@ sed -e "s#\$version#%{bug_version}#g" -e 's/<!--.*-->//;/^$/d' %{SOURCE19} > %{b
 install -d %{buildroot}%{_sysconfdir}/swid/swidtags.d
 ln -s --relative %{buildroot}%{_swidtagdir} %{buildroot}%{_sysconfdir}/swid/swidtags.d/fedoraproject.org
 
+# Install DNF 5 configuration defaults
+install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
+
 
 %files common
 %license licenses/LICENSE licenses/Fedora-Legal-README.txt
@@ -1673,6 +1677,7 @@ ln -s --relative %{buildroot}%{_swidtagdir} %{buildroot}%{_sysconfdir}/swid/swid
 %{_swidtagdir}/org.fedoraproject.Fedora-%{bug_version}.swidtag
 %dir %{_sysconfdir}/swid
 %{_sysconfdir}/swid/swidtags.d
+%{_prefix}/share/dnf5/libdnf.conf.d/20-fedora-defaults.conf
 
 
 %if %{with basic}
