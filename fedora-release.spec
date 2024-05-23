@@ -121,6 +121,7 @@ Source28:       longer-default-shutdown-timeout.conf
 Source29:       org.gnome.settings-daemon.plugins.power.gschema.override
 Source30:       fedora-sway.conf
 Source31:       20-fedora-defaults.conf
+Source32:       75-eln.preset
 
 BuildArch:      noarch
 
@@ -1387,6 +1388,9 @@ sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/ELN/;s/<!--.*-->//;/^$/d' %
 
 # ELN installs the Server presets as well
 install -Dm0644 %{SOURCE14} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
+
+# ELN may override some presets from Fedora to simplify branching for CentOS Stream
+install -Dm0644 %{SOURCE32} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 %endif
 
 %if %{with iot}
@@ -1749,6 +1753,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-eln
 %{_prefix}/lib/os-release.eln
 %{_prefix}/lib/systemd/system-preset/80-server.preset
+%{_prefix}/lib/systemd/system-preset/75-eln.preset
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.eln
 %endif
 
