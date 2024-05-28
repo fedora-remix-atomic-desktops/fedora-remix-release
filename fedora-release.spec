@@ -1692,6 +1692,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-cinnamon
 %{_prefix}/lib/os-release.cinnamon
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.cinnamon
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
 
@@ -1708,6 +1709,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-compneuro
 %{_prefix}/lib/os-release.compneuro
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.compneuro
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
 
@@ -1735,6 +1737,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-designsuite
 %{_prefix}/lib/os-release.designsuite
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.designsuite
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
 
@@ -1773,6 +1776,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-matecompiz
 %{_prefix}/lib/os-release.matecompiz
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.matecompiz
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
 
@@ -1829,6 +1833,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-soas
 %{_prefix}/lib/os-release.soas
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.soas
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
 
@@ -1858,6 +1863,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-xfce
 %{_prefix}/lib/os-release.xfce
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.xfce
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
 
@@ -1866,6 +1872,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-i3
 %{_prefix}/lib/os-release.i3
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.i3
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
 
@@ -1874,6 +1881,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-lxqt
 %{_prefix}/lib/os-release.lxqt
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.lxqt
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
 %if %{with budgie}
@@ -1881,6 +1889,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-budgie
 %{_prefix}/lib/os-release.budgie
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.budgie
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
 
