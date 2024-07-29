@@ -32,10 +32,12 @@
 %bcond_without eln
 %bcond_with iot
 %bcond_with kde
+%bcond_with kde_mobile
 %bcond_with matecompiz
 %bcond_with server
 %bcond_with silverblue
 %bcond_with kinoite
+%bcond_with kinoite_mobile
 %bcond_with snappy
 %bcond_with soas
 %bcond_with toolbx
@@ -59,10 +61,12 @@
 %bcond_with eln
 %bcond_without iot
 %bcond_without kde
+%bcond_without kde_mobile
 %bcond_without matecompiz
 %bcond_without server
 %bcond_without silverblue
 %bcond_without kinoite
+%bcond_without kinoite_mobile
 %bcond_without snappy
 %bcond_without soas
 %bcond_without toolbx
@@ -77,7 +81,7 @@
 %bcond_without mobility
 %endif
 
-%if %{with silverblue} || %{with kinoite} || %{with sway_atomic} || %{with budgie_atomic}
+%if %{with silverblue} || %{with kinoite} || %{with kinoite_mobile} || %{with sway_atomic} || %{with budgie_atomic}
 %global with_ostree_desktop 1
 %endif
 
@@ -122,6 +126,8 @@ Source29:       org.gnome.settings-daemon.plugins.power.gschema.override
 Source30:       fedora-sway.conf
 Source31:       20-fedora-defaults.conf
 Source32:       75-eln.preset
+Source33:       plasma-mobile.conf
+Source34:       80-kde-mobile.preset
 
 BuildArch:      noarch
 
@@ -597,6 +603,41 @@ Provides the necessary files for a Fedora installation that is identifying
 itself as Fedora KDE Plasma Spin.
 %endif
 
+%if %{with kde_mobile}
+%package kde-mobile
+Summary:        Base package for Fedora KDE Plasma Mobile specific default configurations
+
+RemovePathPostfixes: .kde-mobile
+Provides:       fedora-release = %{version}-%{release}
+Provides:       fedora-release-variant = %{version}-%{release}
+Provides:       system-release
+Provides:       system-release(%{version})
+Requires:       fedora-release-common = %{version}-%{release}
+
+# fedora-release-common Requires: fedora-release-identity, so at least one
+# package must provide it. This Recommends: pulls in
+# fedora-release-identity-kde-mobile if nothing else is already doing so.
+Recommends:     fedora-release-identity-kde-mobile
+
+
+%description kde-mobile
+Provides a base package for Fedora KDE Plasma Mobile specific configuration files to
+depend on as well as KDE Plasma Mobile system defaults.
+
+
+%package identity-kde-mobile
+Summary:        Package providing the identity for Fedora KDE Plasma Mobile Spin
+
+RemovePathPostfixes: .kde-mobile
+Provides:       fedora-release-identity = %{version}-%{release}
+Conflicts:      fedora-release-identity
+Requires(meta): fedora-release-kde-mobile = %{version}-%{release}
+
+
+%description identity-kde-mobile
+Provides the necessary files for a Fedora installation that is identifying
+itself as Fedora KDE Plasma Mobile Spin.
+%endif
 
 %if %{with matecompiz}
 %package matecompiz
@@ -747,6 +788,42 @@ Provides the necessary files for a Fedora installation that is identifying
 itself as Fedora Kinoite.
 %endif
 
+%if %{with kinoite_mobile}
+%package kinoite-mobile
+Summary:        Base package for Fedora Kinoite Mobile specific default configurations
+
+RemovePathPostfixes: .kinoite-mobile
+Provides:       fedora-release = %{version}-%{release}
+Provides:       fedora-release-variant = %{version}-%{release}
+Provides:       system-release
+Provides:       system-release(%{version})
+Requires:       fedora-release-common = %{version}-%{release}
+Requires:       fedora-release-ostree-desktop = %{version}-%{release}
+
+# fedora-release-common Requires: fedora-release-identity, so at least one
+# package must provide it. This Recommends: pulls in
+# fedora-release-identity-kinoite-mobile if nothing else is already doing so.
+Recommends:     fedora-release-identity-kinoite-mobile
+
+
+%description kinoite-mobile
+Provides a base package for Fedora Kinoite Mobile specific configuration files to
+depend on as well as Kinoite Mobile system defaults.
+
+
+%package identity-kinoite-mobile
+Summary:        Package providing the identity for Fedora Kinoite Mobile.
+
+RemovePathPostfixes: .kinoite-mobile
+Provides:       fedora-release-identity = %{version}-%{release}
+Conflicts:      fedora-release-identity
+Requires(meta): fedora-release-kinoite-mobile = %{version}-%{release}
+
+
+%description identity-kinoite-mobile
+Provides the necessary files for a Fedora installation that is identifying
+itself as Fedora Kinoite Mobile.
+%endif
 
 %if %{with ostree_desktop}
 %package ostree-desktop
@@ -1419,6 +1496,18 @@ sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/KDE/;s/<!--.*-->//;/^$/d' %
 install -Dm0644 %{SOURCE25} -t %{buildroot}%{_sysconfdir}/dnf/protected.d/
 %endif
 
+%if %{with kde_mobile}
+# KDE Plasma Mobile
+cp -p os-release \
+      %{buildroot}%{_prefix}/lib/os-release.kde-mobile
+echo "VARIANT=\"KDE Plasma Mobile\"" >> %{buildroot}%{_prefix}/lib/os-release.kde-mobile
+echo "VARIANT_ID=kde-mobile" >> %{buildroot}%{_prefix}/lib/os-release.kde-mobile
+sed -i -e "s|(%{release_name}%{?prerelease})|(KDE Plasma Mobile%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.kde-mobile
+sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/KDE Mobile/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kde-mobile
+# Add plasma-mobile to dnf protected packages list for KDE  Mobile
+install -Dm0644 %{SOURCE33} -t %{buildroot}%{_sysconfdir}/dnf/protected.d/
+%endif
+
 %if %{with matecompiz}
 # MATE-Compiz
 cp -p os-release \
@@ -1468,6 +1557,19 @@ sed -i -e 's|DOCUMENTATION_URL=.*|DOCUMENTATION_URL="https://docs.fedoraproject.
 sed -i -e 's|HOME_URL=.*|HOME_URL="https://kinoite.fedoraproject.org"|' %{buildroot}/%{_prefix}/lib/os-release.kinoite
 sed -i -e 's|BUG_REPORT_URL=.*|BUG_REPORT_URL="https://pagure.io/fedora-kde/SIG/issues"|' %{buildroot}/%{_prefix}/lib/os-release.kinoite
 sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/Kinoite/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kinoite
+%endif
+
+%if %{with kinoite_mobile}
+# Kinoite Mobile
+cp -p os-release \
+      %{buildroot}%{_prefix}/lib/os-release.kinoite-mobile
+echo "VARIANT=\"Kinoite Mobile\"" >> %{buildroot}%{_prefix}/lib/os-release.kinoite-mobile
+echo "VARIANT_ID=kinoite-mobile" >> %{buildroot}%{_prefix}/lib/os-release.kinoite-mobile
+sed -i -e "s|(%{release_name}%{?prerelease})|(Kinoite Mobile%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.kinoite-mobile
+sed -i -e 's|DOCUMENTATION_URL=.*|DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora-kinoite/"|' %{buildroot}%{_prefix}/lib/os-release.kinoite-mobile
+sed -i -e 's|HOME_URL=.*|HOME_URL="https://kinoite.fedoraproject.org"|' %{buildroot}/%{_prefix}/lib/os-release.kinoite-mobile
+sed -i -e 's|BUG_REPORT_URL=.*|BUG_REPORT_URL="https://pagure.io/fedora-kde/SIG/issues"|' %{buildroot}/%{_prefix}/lib/os-release.kinoite-mobile
+sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/Kinoite Mobile/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kinoite-mobile
 %endif
 
 %if %{with snappy}
@@ -1523,6 +1625,12 @@ install -Dm0644 %{SOURCE16} -t %{buildroot}%{_datadir}/glib-2.0/schemas/
 %if %{with kde} || %{with kinoite}
 # Common desktop preset and spin specific preset
 install -Dm0644 %{SOURCE26} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
+install -Dm0644 %{SOURCE27} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
+%endif
+
+%if %{with kde_mobile} || %{with kinoite_mobile}
+# Common desktop preset and spin specific preset
+install -Dm0644 %{SOURCE34} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 install -Dm0644 %{SOURCE27} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 %endif
 
@@ -1779,6 +1887,15 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %{_sysconfdir}/dnf/protected.d/plasma-desktop.conf
 %endif
 
+%if %{with kde_mobile}
+%files kde-mobile
+%files identity-kde-mobile
+%{_prefix}/lib/os-release.kde-mobile
+%{_prefix}/lib/systemd/system-preset/80-kde-mobile.preset
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
+%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kde-mobile
+%{_sysconfdir}/dnf/protected.d/plasma-mobile.conf
+%endif
 
 %if %{with matecompiz}
 %files matecompiz
@@ -1822,6 +1939,14 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kinoite
 %endif
 
+%if %{with kinoite_mobile}
+%files kinoite-mobile
+%files identity-kinoite-mobile
+%{_prefix}/lib/os-release.kinoite-mobile
+%{_prefix}/lib/systemd/system-preset/80-kde-mobile.preset
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
+%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kinoite-mobile
+%endif
 
 %if %{with ostree_desktop}
 %files ostree-desktop
