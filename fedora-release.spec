@@ -21,65 +21,34 @@
 %define doc_version f%{dist_version}
 %endif
 
-%if 0%{?eln}
-%bcond_with basic
-%bcond_with cinnamon
-%bcond_with cloud
-%bcond_with compneuro
-%bcond_with container
-%bcond_with coreos
-%bcond_with designsuite
-%bcond_without eln
-%bcond_with iot
-%bcond_with kde
-%bcond_with kde_mobile
-%bcond_with matecompiz
-%bcond_with server
-%bcond_with silverblue
-%bcond_with kinoite
-%bcond_with kinoite_mobile
-%bcond_with snappy
-%bcond_with soas
-%bcond_with toolbx
-%bcond_with workstation
-%bcond_with xfce
-%bcond_with i3
-%bcond_with lxqt
-%bcond_with budgie
-%bcond_with budgie_atomic
-%bcond_with sway
-%bcond_with sway_atomic
-%bcond_with mobility
-%else
-%bcond_without basic
-%bcond_without cinnamon
-%bcond_without cloud
-%bcond_without compneuro
-%bcond_without container
-%bcond_without coreos
-%bcond_without designsuite
-%bcond_with eln
-%bcond_without iot
-%bcond_without kde
-%bcond_without kde_mobile
-%bcond_without matecompiz
-%bcond_without server
-%bcond_without silverblue
-%bcond_without kinoite
-%bcond_without kinoite_mobile
-%bcond_without snappy
-%bcond_without soas
-%bcond_without toolbx
-%bcond_without workstation
-%bcond_without xfce
-%bcond_without i3
-%bcond_without lxqt
-%bcond_without budgie
-%bcond_without budgie_atomic
-%bcond_without sway
-%bcond_without sway_atomic
-%bcond_without mobility
-%endif
+%bcond basic %[%{undefined eln}]
+%bcond cinnamon %[%{undefined eln}]
+%bcond cloud %[%{undefined eln}]
+%bcond compneuro %[%{undefined eln}]
+%bcond container %[%{undefined eln}]
+%bcond coreos %[%{undefined eln}]
+%bcond designsuite %[%{undefined eln}]
+%bcond eln %[%{defined eln}]
+%bcond iot %[%{undefined eln}]
+%bcond kde %[%{undefined eln}]
+%bcond kde_mobile %[%{undefined eln}]
+%bcond matecompiz %[%{undefined eln}]
+%bcond server %[%{undefined eln}]
+%bcond silverblue %[%{undefined eln}]
+%bcond kinoite %[%{undefined eln}]
+%bcond kinoite_mobile %[%{undefined eln}]
+%bcond snappy %[%{undefined eln}]
+%bcond soas %[%{undefined eln}]
+%bcond toolbx %[%{undefined eln}]
+%bcond workstation %[%{undefined eln}]
+%bcond xfce %[%{undefined eln}]
+%bcond i3 %[%{undefined eln}]
+%bcond lxqt %[%{undefined eln}]
+%bcond budgie %[%{undefined eln}]
+%bcond budgie_atomic %[%{undefined eln}]
+%bcond sway %[%{undefined eln}]
+%bcond sway_atomic %[%{undefined eln}]
+%bcond mobility %[%{undefined eln}]
 
 %if %{with silverblue} || %{with kinoite} || %{with kinoite_mobile} || %{with sway_atomic} || %{with budgie_atomic}
 %global with_ostree_desktop 1
