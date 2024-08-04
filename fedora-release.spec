@@ -49,8 +49,10 @@
 %bcond sway %[%{undefined eln}]
 %bcond sway_atomic %[%{undefined eln}]
 %bcond mobility %[%{undefined eln}]
+%bcond miraclewm %[%{undefined eln}]
+%bcond miraclewm_atomic %[%{undefined eln}]
 
-%if %{with silverblue} || %{with kinoite} || %{with kinoite_mobile} || %{with sway_atomic} || %{with budgie_atomic}
+%if %{with silverblue} || %{with kinoite} || %{with kinoite_mobile} || %{with sway_atomic} || %{with budgie_atomic} || %{with miraclewm_atomic}
 %global with_ostree_desktop 1
 %endif
 
@@ -97,6 +99,7 @@ Source31:       20-fedora-defaults.conf
 Source32:       75-eln.preset
 Source33:       plasma-mobile.conf
 Source34:       80-kde-mobile.preset
+Source35:       fedora-miraclewm.conf
 
 BuildArch:      noarch
 
@@ -1246,6 +1249,80 @@ Provides the necessary files for a Fedora installation that is identifying
 itself as Fedora Mobility.
 %endif
 
+%if %{with miraclewm}
+%package miraclewm
+Summary:        Base package for Fedora MiracleWM specific default configurations
+
+RemovePathPostfixes: .miraclewm
+Provides:       fedora-release = %{version}-%{release}
+Provides:       fedora-release-variant = %{version}-%{release}
+Provides:       system-release
+Provides:       system-release(%{version})
+Requires:       fedora-release-common = %{version}-%{release}
+
+# fedora-release-common Requires: fedora-release-identity, so at least one
+# package must provide it. This Recommends: pulls in
+# fedora-release-identity-miraclewm if nothing else is already doing so.
+Recommends:     fedora-release-identity-miraclewm
+
+
+%description miraclewm
+Provides a base package for Fedora Miracle Window Manager specific configuration
+files to depend on.
+
+
+%package identity-miraclewm
+Summary:        Package providing the identity for Fedora MiracleWM Spin
+
+RemovePathPostfixes: .miraclewm
+Provides:       fedora-release-identity = %{version}-%{release}
+Conflicts:      fedora-release-identity
+Requires(meta): fedora-release-miraclewm = %{version}-%{release}
+
+
+%description identity-miraclewm
+Provides the necessary files for a Fedora installation that is identifying
+itself as Fedora Miracle Window Manager.
+%endif
+
+
+%if %{with miraclewm_atomic}
+%package miraclewm-atomic
+Summary:        Base package for Fedora MiracleWM Atomic specific default configurations
+
+RemovePathPostfixes: .miraclewm-atomic
+Provides:       fedora-release = %{version}-%{release}
+Provides:       fedora-release-variant = %{version}-%{release}
+Provides:       system-release
+Provides:       system-release(%{version})
+Requires:       fedora-release-common = %{version}-%{release}
+Requires:       fedora-release-ostree-desktop = %{version}-%{release}
+
+# fedora-release-common Requires: fedora-release-identity, so at least one
+# package must provide it. This Recommends: pulls in
+# fedora-release-identity-miraclewm-atomic if nothing else is already doing so.
+Recommends:     fedora-release-identity-miraclewm-atomic
+
+
+%description miraclewm-atomic
+Provides a base package for Fedora Miracle Window Manager Atomic specific
+configuration files to depend on.
+
+
+%package identity-miraclewm-atomic
+Summary:        Package providing the identity for Fedora MiracleWM Atomic
+
+RemovePathPostfixes: .miraclewm-atomic
+Provides:       fedora-release-identity = %{version}-%{release}
+Conflicts:      fedora-release-identity
+Requires(meta): fedora-release-miraclewm-atomic = %{version}-%{release}
+
+
+%description identity-miraclewm-atomic
+Provides the necessary files for a Fedora installation that is identifying
+itself as Fedora Miracle Window Manager Atomic.
+%endif
+
 %prep
 mkdir -p licenses
 sed 's|@@VERSION@@|%{dist_version}|g' %{SOURCE2} >licenses/Fedora-Legal-README.txt
@@ -1686,6 +1763,29 @@ echo "VARIANT_ID=mobility" >> %{buildroot}%{_prefix}/lib/os-release.mobility
 sed -i -e "s|(%{release_name}%{?prerelease})|(Mobility%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.mobility
 sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/Mobility/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.mobility
 %endif
+
+%if %{with miraclewm}
+cp -p os-release %{buildroot}%{_prefix}/lib/os-release.miraclewm
+echo "VARIANT=\"MiracleWM\"" >> %{buildroot}%{_prefix}/lib/os-release.miraclewm
+echo "VARIANT_ID=miraclewm" >> %{buildroot}%{_prefix}/lib/os-release.miraclewm
+sed -i -e "s|(%{release_name}%{?prerelease})|(MiracleWM%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.miraclewm
+sed -i -e 's|BUG_REPORT_URL=.*|BUG_REPORT_URL="https://pagure.io/fedora-miracle/SIG/issues"|' %{buildroot}/%{_prefix}/lib/os-release.miraclewm
+sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/MiracleWM/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.miraclewm
+# Add Fedora MiracleWM dnf protected packages list
+install -Dm0644 %{SOURCE35} -t %{buildroot}%{_sysconfdir}/dnf/protected.d/
+%endif
+
+%if %{with miraclewm_atomic}
+cp -p os-release %{buildroot}%{_prefix}/lib/os-release.miraclewm-atomic
+echo "VARIANT=\"MiracleWM Atomic\"" >> %{buildroot}%{_prefix}/lib/os-release.miraclewm-atomic
+echo "VARIANT_ID=miraclewm-atomic" >> %{buildroot}%{_prefix}/lib/os-release.miraclewm-atomic
+sed -i -e "s|(%{release_name}%{?prerelease})|(MiracleWM Atomic%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.miraclewm-atomic
+sed -i -e 's|DOCUMENTATION_URL=.*|DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora-sericea/"|' %{buildroot}%{_prefix}/lib/os-release.miraclewm-atomic
+sed -i -e 's|HOME_URL=.*|HOME_URL="https://fedoraproject.org/atomic-desktops/miraclewm/"|' %{buildroot}/%{_prefix}/lib/os-release.miraclewm-atomic
+sed -i -e 's|BUG_REPORT_URL=.*|BUG_REPORT_URL="https://pagure.io/fedora-miracle/SIG/issues"|' %{buildroot}/%{_prefix}/lib/os-release.miraclewm-atomic
+sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/MiracleWMAtomic/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.miraclewm-atomic
+%endif
+
 # Create the symlink for /etc/os-release
 ln -s ../usr/lib/os-release %{buildroot}%{_sysconfdir}/os-release
 
@@ -2028,6 +2128,25 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files identity-mobility
 %{_prefix}/lib/os-release.mobility
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.mobility
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
+%endif
+
+
+%if %{with miraclewm}
+%files miraclewm
+%files identity-miraclewm
+%{_prefix}/lib/os-release.miraclewm
+%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.miraclewm
+%{_prefix}/lib/systemd/system-preset/81-desktop.preset
+%{_sysconfdir}/dnf/protected.d/fedora-miraclewm.conf
+%endif
+
+
+%if %{with miraclewm_atomic}
+%files miraclewm-atomic
+%files identity-miraclewm-atomic
+%{_prefix}/lib/os-release.miraclewm-atomic
+%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.miraclewm-atomic
 %{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %endif
 
