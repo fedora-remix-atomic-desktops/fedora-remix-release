@@ -2,6 +2,10 @@
 %define release_name Rawhide
 %define is_rawhide 1
 
+# Define this to 1 for Branched releases prior to RC
+# or 0 for RC and stable releases
+%define is_development 1
+
 %define eol_date 2025-05-13
 
 %define dist_version 42
@@ -65,9 +69,8 @@ Summary:        Fedora release files
 Name:           fedora-release
 Version:        42
 # The numbering is 0.<r> before a given Fedora Linux release is released,
-# with r starting at 1, and then just <r>, with r starting again at 1.
-# Use '%%autorelease -p' before final, and then drop the '-p'.
-Release:        %autorelease -p
+# and then just <r>.
+Release:        %autorelease %[0%{?is_development} ? "-p" : ""]
 License:        MIT
 URL:            https://fedoraproject.org/
 
@@ -1375,9 +1378,13 @@ ln -s fedora-release %{buildroot}%{_sysconfdir}/system-release
 %global dist_debuginfod_url https://debuginfod.fedoraproject.org/
 # -------------------------------------------------------------------------
 
-cat << EOF >os-release
+# Set the RELEASE_TYPE appropriately
+%define release_type %[0%{?is_development} ? "development" : "stable"]
+
+cat <<EOF >os-release
 NAME="%{dist_name}"
 VERSION="%{dist_version} (%{release_name}%{?prerelease})"
+RELEASE_TYPE=%{release_type}
 ID=fedora
 VERSION_ID=%{dist_version}
 VERSION_CODENAME=""
