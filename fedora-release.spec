@@ -1375,7 +1375,7 @@ ln -s fedora-release %{buildroot}%{_sysconfdir}/system-release
 %global dist_debuginfod_url https://debuginfod.fedoraproject.org/
 # -------------------------------------------------------------------------
 
-cat << EOF >> os-release
+cat << EOF >os-release
 NAME="%{dist_name}"
 VERSION="%{dist_version} (%{release_name}%{?prerelease})"
 ID=fedora

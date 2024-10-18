@@ -5,3 +5,4 @@ fedora-release-*/*
 *.src.rpm
 noarch/*
 licenses/*
+os-release
