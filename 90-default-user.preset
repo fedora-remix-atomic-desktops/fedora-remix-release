@@ -32,3 +32,8 @@ enable pulseaudio.socket
 # Enable hidpipe
 # https://bugzilla.redhat.com/show_bug.cgi?id=2317288
 enable hidpipe.socket
+
+# Enable mpris-proxy
+# https://bugzilla.redhat.com/show_bug.cgi?id=2323365
+enable mpris-proxy.service
+
