@@ -6,7 +6,7 @@
 # or 0 for RC and stable releases
 %define is_development 1
 
-%define eol_date 2025-05-13
+%define eol_date 2026-05-13
 
 %define dist_version 42
 %define rhel_dist_version 11
