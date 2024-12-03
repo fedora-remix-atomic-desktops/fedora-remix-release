@@ -461,3 +461,7 @@ enable kernel-bootcfg-boot-successful.service
 enable /usr/lib/systemd/system/lvm-devices-import.path
 enable /usr/lib/systemd/system/lvm-devices-import.service
 
+# Enable fips-crypto-policy-overlay
+# https://bugzilla.redhat.com/show_bug.cgi?id=2325499
+enable fips-crypto-policy-overlay.service
+
