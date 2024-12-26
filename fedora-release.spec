@@ -33,6 +33,7 @@
 %bcond coreos %[%{undefined eln}]
 %bcond designsuite %[%{undefined eln}]
 %bcond eln %[%{defined eln}]
+%bcond flatpak %[%{undefined eln}]
 %bcond iot %[%{undefined eln}]
 %bcond kde %[%{undefined eln}]
 %bcond kde_mobile %[%{undefined eln}]
@@ -501,6 +502,48 @@ Requires(meta): fedora-release-eln = %{version}-%{release}
 %description identity-eln
 Provides the necessary files for a Fedora installation that is identifying
 itself as Fedora ELN.
+%endif
+
+
+%if %{with flatpak}
+%package flatpak
+Summary:        Base package for Fedora flatpak specific default configurations
+
+RemovePathPostfixes: .flatpak
+Provides:       fedora-release = %{version}-%{release}
+Provides:       fedora-release-variant = %{version}-%{release}
+Provides:       system-release
+Provides:       system-release(%{version})
+Requires:       fedora-release-common = %{version}-%{release}
+
+# fedora-release-common Requires: fedora-release-identity, so at least one
+# package must provide it. This Recommends: pulls in
+# fedora-release-identity-flatpak if nothing else is already doing so.
+Recommends:     fedora-release-identity-flatpak
+
+
+%description flatpak
+Provides a base package for Fedora flatpak specific configuration files to
+depend on as well as flatpak system defaults.
+
+
+%package identity-flatpak
+Summary:        Package providing the identity for Fedora Flatpak Runtime Image
+
+RemovePathPostfixes: .flatpak
+Provides:       fedora-release-identity = %{version}-%{release}
+Conflicts:      fedora-release-identity
+Requires(meta): fedora-release-flatpak = %{version}-%{release}
+
+# gnuplot requires qt6, gnuplot-wx requires gtk3 (available in all runtimes)
+Suggests:       (gnuplot if qt6-qtbase else gnuplot-wx)
+# default backend included in runtime
+Suggests:       qt6-qtspeech-speechd
+
+
+%description identity-flatpak
+Provides the necessary files for a Fedora installation that is identifying
+itself as the Fedora Flatpak Runtime Image.
 %endif
 
 
@@ -1523,6 +1566,20 @@ install -Dm0644 %{SOURCE14} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 install -Dm0644 %{SOURCE32} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 %endif
 
+%if %{with flatpak}
+# Flatpak
+cp -p os-release \
+      %{buildroot}%{_prefix}/lib/os-release.flatpak
+echo "VARIANT=\"Flatpak runtime\"" >> %{buildroot}%{_prefix}/lib/os-release.flatpak
+echo "VARIANT_ID=flatpak" >> %{buildroot}%{_prefix}/lib/os-release.flatpak
+sed -i -e "s|(%{release_name}%{?prerelease})|(Flatpak runtime%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.flatpak
+sed -i -e 's|DOCUMENTATION_URL=.*|DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/flatpak/"|' %{buildroot}%{_prefix}/lib/os-release.flatpak
+sed -i -e 's|SUPPORT_URL=.*|SUPPORT_URL="https://gitlab.com/fedora/sigs/flatpak/fedora-flatpaks/-/issues"|' %{buildroot}/%{_prefix}/lib/os-release.flatpak
+sed -i -e 's|BUG_REPORT_URL=.*|BUG_REPORT_URL="https://gitlab.com/fedora/sigs/flatpak/fedora-flatpaks/-/issues"|' %{buildroot}/%{_prefix}/lib/os-release.flatpak
+sed -i -e 's|PRETTY_NAME=.*|PRETTY_NAME="Fedora %{dist_version} (Flatpak runtime)"|' %{buildroot}/%{_prefix}/lib/os-release.flatpak
+sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/Flatpak/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.flatpak
+%endif
+
 %if %{with iot}
 # IoT
 cp -p os-release \
@@ -1939,6 +1996,14 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %{_prefix}/lib/systemd/system-preset/80-server.preset
 %{_prefix}/lib/systemd/system-preset/75-eln.preset
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.eln
+%endif
+
+
+%if %{with flatpak}
+%files flatpak
+%files identity-flatpak
+%{_prefix}/lib/os-release.flatpak
+%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.flatpak
 %endif
 
 
