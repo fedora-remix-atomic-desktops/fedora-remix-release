@@ -58,6 +58,7 @@
 %bcond miraclewm_atomic %[%{undefined eln}]
 %bcond cosmic %[%{undefined eln}]
 %bcond cosmic_atomic %[%{undefined eln}]
+%bcond wsl %[%{undefined eln}]
 
 %if %{with silverblue} || %{with kinoite} || %{with kinoite_mobile} || %{with sway_atomic} || %{with budgie_atomic} || %{with miraclewm_atomic} || %{with cosmic_atomic}
 %global with_ostree_desktop 1
@@ -107,6 +108,9 @@ Source33:       plasma-mobile.conf
 Source34:       80-kde-mobile.preset
 Source35:       fedora-miraclewm.conf
 Source36:       fedora-cosmic.conf
+Source37:       wsl.conf
+Source38:       wsl-distribution.conf
+Source39:       wsl-oobe.sh
 
 BuildArch:      noarch
 
@@ -1447,6 +1451,42 @@ Provides the necessary files for a Fedora installation that is identifying
 itself as Fedora COSMIC Atomic.
 %endif
 
+%if %{with wsl}
+%package wsl
+Summary:        Base package for Fedora WSL specific default configurations
+
+RemovePathPostfixes: .wsl
+Provides:       fedora-release = %{version}-%{release}
+Provides:       fedora-release-variant = %{version}-%{release}
+Provides:       system-release
+Provides:       system-release(%{version})
+Requires:       fedora-release-common = %{version}-%{release}
+
+# fedora-release-common Requires: fedora-release-identity, so at least one
+# package must provide it. This Recommends: pulls in
+# fedora-release-identity-wsl if nothing else is already doing so.
+Recommends:     fedora-release-identity-wsl
+
+
+%description wsl
+Provides a base package for Fedora WSL specific configuration files to
+depend on as well as WSL system defaults.
+
+
+%package identity-wsl
+Summary:        Package providing the identity for Fedora WSL.
+
+RemovePathPostfixes: .wsl
+Provides:       fedora-release-identity = %{version}-%{release}
+Conflicts:      fedora-release-identity
+Requires(meta): fedora-release-container = %{version}-%{release}
+
+
+%description identity-wsl
+Provides the necessary files for a Fedora installation that is identifying
+itself as Fedora WSL.
+%endif
+
 %prep
 mkdir -p licenses
 sed 's|@@VERSION@@|%{dist_version}|g' %{SOURCE2} >licenses/Fedora-Legal-README.txt
@@ -1949,6 +1989,16 @@ sed -i -e 's|BUG_REPORT_URL=.*|BUG_REPORT_URL="https://pagure.io/fedora-cosmic/S
 sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/COSMICAtomic/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.cosmic-atomic
 %endif
 
+%if %{with wsl}
+install -pm0644 -t %{buildroot}%{_sysconfdir}/ %{SOURCE37} %{SOURCE38}
+install -Dpm0755 -T %{SOURCE39} %{buildroot}%{_libexecdir}/wsl/oobe.sh
+cp -p os-release %{buildroot}%{_prefix}/lib/os-release.wsl
+echo "VARIANT=\"WSL\"" >> %{buildroot}%{_prefix}/lib/os-release.wsl
+echo "VARIANT_ID=wsl" >> %{buildroot}%{_prefix}/lib/os-release.wsl
+sed -i -e "s|(%{release_name}%{?prerelease})|(WSL%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.wsl
+sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/WSL/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.wsl
+%endif
+
 # Create the symlink for /etc/os-release
 ln -s ../usr/lib/os-release %{buildroot}%{_sysconfdir}/os-release
 
@@ -2338,6 +2388,16 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %{_prefix}/lib/os-release.cosmic-atomic
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.cosmic-atomic
 %{_prefix}/lib/systemd/system-preset/81-desktop.preset
+%endif
+
+%if %{with wsl}
+%files wsl
+%{_sysconfdir}/wsl.conf
+%{_sysconfdir}/wsl-distribution.conf
+%{_libexecdir}/wsl/oobe.sh
+%files identity-wsl
+%{_prefix}/lib/os-release.wsl
+%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.wsl
 %endif
 
 
