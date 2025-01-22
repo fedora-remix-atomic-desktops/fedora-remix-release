@@ -1990,7 +1990,11 @@ sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/COSMICAtomic/;s/<!--.*-->//
 %endif
 
 %if %{with wsl}
-install -pm0644 -t %{buildroot}%{_sysconfdir}/ %{SOURCE37} %{SOURCE38}
+install -pm0644 -t %{buildroot}%{_sysconfdir}/ %{SOURCE37}
+
+install -pm0644 -t %{buildroot}%{_prefix}/lib/ %{SOURCE38}
+ln -s ..%{_prefix}/lib/wsl-distribution.conf %{buildroot}%{_sysconfdir}/wsl-distribution.conf
+
 install -Dpm0755 -T %{SOURCE39} %{buildroot}%{_libexecdir}/wsl/oobe.sh
 cp -p os-release %{buildroot}%{_prefix}/lib/os-release.wsl
 echo "VARIANT=\"WSL\"" >> %{buildroot}%{_prefix}/lib/os-release.wsl
@@ -2392,7 +2396,8 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 
 %if %{with wsl}
 %files wsl
-%{_sysconfdir}/wsl.conf
+%config(noreplace) %{_sysconfdir}/wsl.conf
+%{_prefix}/lib/wsl-distribution.conf
 %{_sysconfdir}/wsl-distribution.conf
 %{_libexecdir}/wsl/oobe.sh
 %files identity-wsl
