@@ -8,7 +8,7 @@
 
 %define eol_date 2026-05-13
 
-%define dist_version 42
+%define dist_version 43
 %define rhel_dist_version 11
 
 %if %{is_rawhide}
@@ -71,7 +71,7 @@
 
 Summary:        Fedora release files
 Name:           fedora-release
-Version:        42
+Version:        43
 # The numbering is 0.<r> before a given Fedora Linux release is released,
 # and then just <r>.
 Release:        %autorelease %[0%{?is_development} ? "-p" : ""]
