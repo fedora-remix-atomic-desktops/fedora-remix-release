@@ -1565,13 +1565,13 @@ EOF
 
 # Create the common /etc/issue
 echo "\S" > %{buildroot}%{_prefix}/lib/issue
-echo "Kernel \r on an \m (\l)" >> %{buildroot}%{_prefix}/lib/issue
+echo "Kernel \r on \m (\l)" >> %{buildroot}%{_prefix}/lib/issue
 echo >> %{buildroot}%{_prefix}/lib/issue
 ln -s ../usr/lib/issue %{buildroot}%{_sysconfdir}/issue
 
 # Create /etc/issue.net
 echo "\S" > %{buildroot}%{_prefix}/lib/issue.net
-echo "Kernel \r on an \m (\l)" >> %{buildroot}%{_prefix}/lib/issue.net
+echo "Kernel \r on \m (\l)" >> %{buildroot}%{_prefix}/lib/issue.net
 ln -s ../usr/lib/issue.net %{buildroot}%{_sysconfdir}/issue.net
 
 # Create /etc/issue.d
