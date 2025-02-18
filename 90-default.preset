@@ -125,6 +125,12 @@ enable virtlogd-admin.socket
 enable virtlockd.socket
 enable virtlockd-admin.socket
 
+# Intel SGX
+# https://bugzilla.redhat.com/show_bug.cgi?id=2346248
+enable aesmd.service
+enable mpa_registration.service
+enable qgs.service
+
 # https://fedoraproject.org/w/index.php?title=Starting_services_by_default&oldid=377748
 enable xinetd.service
 
