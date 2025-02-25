@@ -28,3 +28,7 @@ enable fedora-iot-config-remote-fix.service
 
 # enable FDO client for device onboarding
 enable fdo-client-linuxapp.service
+
+# enable ignition first-boot services
+enable ignition-firstboot-complete.service
+enable coreos-ignition-write-issues.service
