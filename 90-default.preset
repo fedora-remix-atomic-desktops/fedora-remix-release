@@ -177,8 +177,11 @@ enable dnf-makecache.timer
 # https://bugzilla.redhat.com/show_bug.cgi?id=1995495
 enable rpm-ostree-countme.timer
 
+# Hyper-V guest support daemons
 # https://bugzilla.redhat.com/show_bug.cgi?id=957135
+# https://bugzilla.redhat.com/show_bug.cgi?id=1279322
 enable vmtoolsd.service
+enable vgauthd.service
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=976315
 enable dkms.service
@@ -263,10 +266,6 @@ enable plocate-updatedb.timer
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1218999
 enable sa-update.timer
-
-# Hyper-V guest support daemons
-# https://bugzilla.redhat.com/show_bug.cgi?id=1279322
-enable vmtoolsd.service
 
 # mcelog is a utility that collects and decodes Machine Check Exception data
 # on x86-32 and x86-64 systems.
