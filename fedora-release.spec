@@ -2224,7 +2224,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %files kinoite
 %files identity-kinoite
 %{_prefix}/lib/os-release.kinoite
-%{_prefix}/lib/systemd/system-preset/80-kde.preset
+%{_prefix}/lib/systemd/system-preset/80-kde-desktop.preset
 %{_prefix}/lib/systemd/system-preset/81-desktop.preset
 %attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kinoite
 %endif
