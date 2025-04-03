@@ -35,7 +35,7 @@
 %bcond eln %[%{defined eln}]
 %bcond flatpak %[%{undefined eln}]
 %bcond iot %[%{undefined eln}]
-%bcond kde %[%{undefined eln}]
+%bcond kde_desktop %[%{undefined eln}]
 %bcond kde_mobile %[%{undefined eln}]
 %bcond matecompiz %[%{undefined eln}]
 %bcond server %[%{undefined eln}]
@@ -97,7 +97,7 @@ Source22:       80-coreos.preset
 Source23:       zezere-ignition-url
 Source24:       80-iot-user.preset
 Source25:       plasma-desktop.conf
-Source26:       80-kde.preset
+Source26:       80-kde-desktop.preset
 Source27:       81-desktop.preset
 Source28:       longer-default-shutdown-timeout.conf
 Source29:       org.gnome.settings-daemon.plugins.power.gschema.override
@@ -589,11 +589,13 @@ itself as Fedora IoT Edition.
 %endif
 
 
-%if %{with kde}
-%package kde
-Summary:        Base package for Fedora KDE Plasma-specific default configurations
+%if %{with kde_desktop}
+%package kde-desktop
+Summary:        Base package for Fedora KDE Plasma Desktop-specific default configurations
 
-RemovePathPostfixes: .kde
+RemovePathPostfixes: .kde-desktop
+Obsoletes:      %{name}-kde < 43-0.9
+Provides:       %{name}-kde = %{version}-%{release}
 Provides:       fedora-release = %{version}-%{release}
 Provides:       fedora-release-variant = %{version}-%{release}
 Provides:       system-release
@@ -603,26 +605,28 @@ Requires:       fedora-release-common = %{version}-%{release}
 # fedora-release-common Requires: fedora-release-identity, so at least one
 # package must provide it. This Recommends: pulls in
 # fedora-release-identity-kde if nothing else is already doing so.
-Recommends:     fedora-release-identity-kde
+Recommends:     fedora-release-identity-kde-desktop
 
 
-%description kde
-Provides a base package for Fedora KDE Plasma-specific configuration files to
-depend on as well as KDE Plasma system defaults.
+%description kde-desktop
+Provides a base package for Fedora KDE Plasma Desktop-specific configuration
+files to depend on as well as KDE Plasma Desktop system defaults.
 
 
-%package identity-kde
-Summary:        Package providing the identity for Fedora KDE Plasma Spin
+%package identity-kde-desktop
+Summary:        Package providing the identity for Fedora KDE Plasma Desktop Edition
 
-RemovePathPostfixes: .kde
+RemovePathPostfixes: .kde-desktop
+Obsoletes:      %{name}-identity-kde < 43-0.9
+Provides:       %{name}-identity-kde = %{version}-%{release}
 Provides:       fedora-release-identity = %{version}-%{release}
 Conflicts:      fedora-release-identity
-Requires(meta): fedora-release-kde = %{version}-%{release}
+Requires(meta): fedora-release-kde-desktop = %{version}-%{release}
 
 
-%description identity-kde
+%description identity-kde-desktop
 Provides the necessary files for a Fedora installation that is identifying
-itself as Fedora KDE Plasma Spin.
+itself as Fedora KDE Plasma Desktop Edition.
 %endif
 
 %if %{with kde_mobile}
@@ -1709,15 +1713,16 @@ install -Dm0644 %{SOURCE18} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 install -Dm0644 %{SOURCE24} -t %{buildroot}%{_prefix}/lib/systemd/user-preset/
 %endif
 
-%if %{with kde}
-# KDE Plasma
+%if %{with kde_desktop}
+# KDE Plasma Desktop
 cp -p os-release \
-      %{buildroot}%{_prefix}/lib/os-release.kde
-echo "VARIANT=\"KDE Plasma\"" >> %{buildroot}%{_prefix}/lib/os-release.kde
-echo "VARIANT_ID=kde" >> %{buildroot}%{_prefix}/lib/os-release.kde
-sed -i -e "s|(%{release_name}%{?prerelease})|(KDE Plasma%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.kde
-sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/KDE/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kde
-# Add plasma-desktop to dnf protected packages list for KDE
+      %{buildroot}%{_prefix}/lib/os-release.kde-desktop
+echo "VARIANT=\"KDE Plasma Desktop Edition\"" >> %{buildroot}%{_prefix}/lib/os-release.kde-desktop
+# kept as-is from the spin to prevent third-party stuff from breaking
+echo "VARIANT_ID=kde" >> %{buildroot}%{_prefix}/lib/os-release.kde-desktop
+sed -i -e "s|(%{release_name}%{?prerelease})|(KDE Plasma%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.kde-desktop
+sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/KDE Desktop/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kde-desktop
+# Add plasma-desktop to dnf protected packages list for KDE Desktop
 install -Dm0644 %{SOURCE25} -t %{buildroot}%{_sysconfdir}/dnf/protected.d/
 %endif
 
@@ -1847,7 +1852,7 @@ install -Dm0644 %{SOURCE27} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 install -Dm0644 %{SOURCE16} -t %{buildroot}%{_datadir}/glib-2.0/schemas/
 %endif
 
-%if %{with kde} || %{with kinoite}
+%if %{with kde_desktop} || %{with kinoite}
 # Common desktop preset and spin specific preset
 install -Dm0644 %{SOURCE26} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 install -Dm0644 %{SOURCE27} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
@@ -2162,13 +2167,13 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 %endif
 
 
-%if %{with kde}
-%files kde
-%files identity-kde
-%{_prefix}/lib/os-release.kde
-%{_prefix}/lib/systemd/system-preset/80-kde.preset
+%if %{with kde_desktop}
+%files kde-desktop
+%files identity-kde-desktop
+%{_prefix}/lib/os-release.kde-desktop
+%{_prefix}/lib/systemd/system-preset/80-kde-desktop.preset
 %{_prefix}/lib/systemd/system-preset/81-desktop.preset
-%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kde
+%attr(0644,root,root) %{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kde-desktop
 %{_sysconfdir}/dnf/protected.d/plasma-desktop.conf
 %endif
 
