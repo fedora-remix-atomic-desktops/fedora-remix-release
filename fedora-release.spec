@@ -1,4 +1,3 @@
-
 %define release_name Rawhide
 %define is_rawhide 1
 
@@ -1537,7 +1536,7 @@ ln -s fedora-release %{buildroot}%{_sysconfdir}/system-release
 %global dist_bug_report_url https://bugzilla.redhat.com/
 
 # debuginfod server, as used in elfutils.spec.
-%global dist_debuginfod_url https://debuginfod.fedoraproject.org/
+%global dist_debuginfod_url ima:enforcing https://debuginfod.fedoraproject.org/ ima:ignore
 # -------------------------------------------------------------------------
 
 # Set the RELEASE_TYPE appropriately
