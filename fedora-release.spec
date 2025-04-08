@@ -1719,7 +1719,7 @@ cp -p os-release \
 echo "VARIANT=\"KDE Plasma Desktop Edition\"" >> %{buildroot}%{_prefix}/lib/os-release.kde-desktop
 # kept as-is from the spin to prevent third-party stuff from breaking
 echo "VARIANT_ID=kde" >> %{buildroot}%{_prefix}/lib/os-release.kde-desktop
-sed -i -e "s|(%{release_name}%{?prerelease})|(KDE Plasma%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.kde-desktop
+sed -i -e "s|(%{release_name}%{?prerelease})|(KDE Plasma Desktop Edition%{?prerelease})|g" %{buildroot}%{_prefix}/lib/os-release.kde-desktop
 sed -e "s#\$version#%{bug_version}#g" -e 's/$edition/KDE Desktop/;s/<!--.*-->//;/^$/d' %{SOURCE20} > %{buildroot}%{_swidtagdir}/org.fedoraproject.Fedora-edition.swidtag.kde-desktop
 # Add plasma-desktop to dnf protected packages list for KDE Desktop
 install -Dm0644 %{SOURCE25} -t %{buildroot}%{_sysconfdir}/dnf/protected.d/
