@@ -474,3 +474,6 @@ enable /usr/lib/systemd/system/lvm-devices-import.service
 # https://bugzilla.redhat.com/show_bug.cgi?id=2325499
 enable fips-crypto-policy-overlay.service
 
+# Enable gpio-manager.service
+# https://bugzilla.redhat.com/show_bug.cgi?id=2358608
+enable gpio-manager.service
