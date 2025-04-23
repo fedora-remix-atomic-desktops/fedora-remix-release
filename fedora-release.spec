@@ -1549,7 +1549,6 @@ RELEASE_TYPE=%{release_type}
 ID=fedora
 VERSION_ID=%{dist_version}
 VERSION_CODENAME=""
-PLATFORM_ID="platform:f%{dist_version}"
 PRETTY_NAME="Fedora Linux %{dist_version} (%{release_name}%{?prerelease})"
 ANSI_COLOR="0;38;2;60;110;180"
 LOGO=fedora-logo-icon
@@ -1671,7 +1670,6 @@ cp -p os-release \
       %{buildroot}%{_prefix}/lib/os-release.eln
 echo "VARIANT=\"ELN\"" >> %{buildroot}%{_prefix}/lib/os-release.eln
 echo "VARIANT_ID=eln" >> %{buildroot}%{_prefix}/lib/os-release.eln
-sed -i -e 's|PLATFORM_ID=.*|PLATFORM_ID="platform:eln"|' %{buildroot}/%{_prefix}/lib/os-release.eln
 sed -i -e 's|PRETTY_NAME=.*|PRETTY_NAME="Fedora ELN"|' %{buildroot}/%{_prefix}/lib/os-release.eln
 sed -i -e 's|DOCUMENTATION_URL=.*|DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/eln/"|' %{buildroot}%{_prefix}/lib/os-release.eln
 sed -i -e "/^DEFAULT_HOSTNAME=/d" %{buildroot}%{_prefix}/lib/os-release.eln
