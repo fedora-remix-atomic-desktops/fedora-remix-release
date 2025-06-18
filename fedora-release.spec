@@ -496,6 +496,9 @@ Suggests: iptables-nft
 Suggests: blas
 Suggests: blas64
 
+# Prefer over wget2-wget for wget
+Suggests: wget1-wget
+
 RemovePathPostfixes: .eln
 Provides:       fedora-release-identity = %{version}-%{release}
 Conflicts:      fedora-release-identity
