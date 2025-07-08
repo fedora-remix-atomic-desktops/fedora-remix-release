@@ -499,6 +499,10 @@ Suggests: blas64
 # Prefer over wget2-wget for wget
 Suggests: wget1-wget
 
+# Prefer over fedora-logos(-httpd) for system-logos(-httpd)
+Suggests: fedora-eln-logos
+Suggests: fedora-eln-logos-httpd
+
 RemovePathPostfixes: .eln
 Provides:       fedora-release-identity = %{version}-%{release}
 Conflicts:      fedora-release-identity
