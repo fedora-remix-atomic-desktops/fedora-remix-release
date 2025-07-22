@@ -1534,6 +1534,12 @@ ln -s fedora-release %{buildroot}%{_sysconfdir}/system-release
 %global dist_vendor Fedora
 %global dist_name   Fedora Linux
 
+# The namespace for purl
+# https://github.com/package-url/purl-spec
+# for example as in: pkg:rpm/fedora/python-setuptools@69.2.0-10.fc41?arch=src"
+# Note that we use "fedora" even for Fedora ELN
+%global dist_purl_namespace fedora
+
 # URL of the homepage of the distribution
 # Example: gstreamer1-plugins-base.spec
 %global dist_home_url https://fedoraproject.org/
@@ -2026,6 +2032,7 @@ cat >> %{buildroot}%{_rpmconfigdir}/macros.d/macros.dist << EOF
 %%dist                %%{!?distprefix0:%%{?distprefix}}%%{expand:%%{lua:for i=0,9999 do print("%%{?distprefix" .. i .."}") end}}%%{distcore}%%{?with_bootstrap:%%{__bootstrap}}
 %%dist_vendor         %{dist_vendor}
 %%dist_name           %{dist_name}
+%%dist_purl_namespace %{dist_purl_namespace}
 %%dist_home_url       %{dist_home_url}
 %%dist_bug_report_url %{dist_bug_report_url}
 %%dist_debuginfod_url %{dist_debuginfod_url}
