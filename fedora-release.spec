@@ -460,10 +460,11 @@ Suggests: bind-utils
 
 # Default OpenJDK version, prefer over other versions for
 # Provides: java, java-devel, java-headless, maven-jdk-binding, etc.
-Suggests: java-21-openjdk
-Suggests: java-21-openjdk-devel
-Suggests: java-21-openjdk-headless
-Suggests: maven-openjdk21
+Suggests: java-25-openjdk
+Suggests: java-25-openjdk-devel
+Suggests: java-25-openjdk-headless
+Suggests: maven-openjdk25
+Suggests: maven4-openjdk25
 
 # Prefer over Fedora freeipa (same code, different name, each Provides the other)
 Suggests: ipa-client
