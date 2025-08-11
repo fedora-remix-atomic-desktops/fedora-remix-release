@@ -550,6 +550,8 @@ Requires(meta): fedora-release-flatpak = %{version}-%{release}
 Suggests:       (gnuplot if qt6-qtbase else gnuplot-wx)
 # default backend included in runtime
 Suggests:       qt6-qtspeech-speechd
+# Prefer over wget1-wget for webclient
+Suggests:       wget2-wget
 
 
 %description identity-flatpak
