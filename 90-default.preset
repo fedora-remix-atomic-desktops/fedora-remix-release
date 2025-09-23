@@ -477,3 +477,8 @@ enable fips-crypto-policy-overlay.service
 # Enable gpio-manager.service
 # https://bugzilla.redhat.com/show_bug.cgi?id=2358608
 enable gpio-manager.service
+
+# Enable authselect-apply-changes.service
+# https://bugzilla.redhat.com/show_bug.cgi?id=2397255
+enable authselect-apply-changes.service
+
