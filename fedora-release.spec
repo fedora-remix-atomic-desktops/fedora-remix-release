@@ -107,6 +107,7 @@ Source33:       plasma-mobile.conf
 Source34:       80-kde-mobile.preset
 Source35:       fedora-miraclewm.conf
 Source36:       fedora-cosmic.conf
+Source37:       81-atomic-desktop.preset
 
 BuildArch:      noarch
 
@@ -1878,6 +1879,8 @@ install -Dm0644 %{SOURCE27} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 %endif
 
 %if %{with ostree_desktop}
+# Install Atomic Desktop specific presets
+install -Dm0644 %{SOURCE37} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 # Install rpm-ostree polkit rules
 install -Dm0644 %{SOURCE17} -t %{buildroot}%{_datadir}/polkit-1/rules.d/
 %endif
@@ -2254,6 +2257,7 @@ install -Dm0644 %{SOURCE31} -t %{buildroot}%{_prefix}/share/dnf5/libdnf.conf.d/
 
 %if %{with ostree_desktop}
 %files ostree-desktop
+%{_prefix}/lib/systemd/system-preset/81-atomic-desktop.preset
 %attr(0644,root,root) %{_prefix}/share/polkit-1/rules.d/org.projectatomic.rpmostree1.rules
 %endif
 
