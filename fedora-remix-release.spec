@@ -68,8 +68,8 @@
 # Changes should be submitted as pull requests under
 #     https://src.fedoraproject.org/rpms/fedora-release
 
-Summary:        Fedora release files
-Name:           fedora-release
+Summary:        Fedora Remix release files
+Name:           fedora-remix-release
 Version:        44
 # The numbering is 0.<r> before a given Fedora Linux release is released,
 # and then just <r>.
