@@ -1,0 +1,19 @@
+specfile_path: fedora-remix-release.spec
+downstream_package_name: fedora-remix-release
+
+jobs:
+  - job: copr_build
+    owner: siosm
+    project: fedora-remix-release
+    trigger: pull_request
+    targets:
+      # - fedora-all
+      - fedora-rawhide
+
+  - job: copr_build
+    owner: siosm
+    project: fedora-remix-release
+    trigger: commit
+    targets:
+      # - fedora-all
+      - fedora-rawhide
